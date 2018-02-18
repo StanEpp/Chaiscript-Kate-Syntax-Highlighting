@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language>
+<!-- Chaiscript syntax highlighting by Stanislaw Eppinger: -->
+<language name="Chaiscript" version="6.0.0" kateversion="5.0" section="Scripts" extensions="*.chai" casesensitive="1" author="Stanislaw Eppinger" license="MIT">
+	<highlighting>
+		<list name="defs">
+			<item>class</item>
+			<item>global</item>
+			<item>GLOBAL</item>
+			<item>def</item>
+			<item>fun</item>
+			<item>var</item>
+		</list>
+		<list name="flow">
+			<item>switch</item>
+			<item>case</item>
+			<item>default</item>
+			<item>break</item>
+			<item>continue</item>
+			<item>if</item>
+			<item>else</item>
+			<item>for</item>
+			<item>try</item>
+			<item>catch</item>
+			<item>finally</item>
+			<item>while</item>
+			<item>do</item>
+			<item>return</item>
+		</list>
+		<list name="builtinFuncs">
+			<item>map</item>
+			<item>max</item>
+			<item>min</item>
+			<item>sum</item>
+			<item>odd</item>
+			<item>zip</item>
+			<item>puts</item>
+			<item>eval</item>
+			<item>drop</item>
+			<item>even</item>
+			<item>join</item>
+			<item>take</item>
+			<item>find</item>
+			<item>type</item>
+			<item>bind</item>
+			<item>print</item>
+			<item>foldl</item>
+			<item>clone</item>
+			<item>throw</item>
+			<item>retro</item>
+			<item>range</item>
+			<item>parse</item>
+			<item>rfind</item>
+			<item>concat</item>
+			<item>filter</item>
+			<item>collate</item>
+			<item>drop_while</item>
+			<item>to_string</item>
+			<item>for_each</item>
+			<item>generate_range</item>
+			<item>add_global</item>
+			<item>set_global</item>
+			<item>from_json</item>
+			<item>to_json</item>
+			<item>product</item>
+			<item>find_first_of</item>
+			<item>find_first_not_of</item>
+			<item>find_last_not_of</item>
+			<item>find_last_of</item>
+			<item>take_while</item>
+			<item>add_type_conversion</item>
+			<item>zip_with</item>
+		</list>
+		<list name="specialVars">
+			<item>auto</item>
+			<item>attr</item>
+			<item>true</item>
+			<item>false</item>
+			<item>this</item>
+			<item>__LINE__</item>
+			<item>__CLASS__</item>
+			<item>__FUNC__</item>
+		</list>
+		<list name="exceptions">
+			<item>runtime_error</item>
+		</list>
+		<contexts>
+			<context name="Normal" attribute="Normal Text" lineEndContext="#stay">
+				<DetectSpaces />
+				<keyword attribute="Definition Keyword" String="defs" context="#stay"/>
+				<keyword attribute="Control Flow" String="flow" context="#stay"/>
+				<keyword attribute="Builtin Function" String="builtinFuncs" context="#stay"/>
+				<keyword attribute="Special Variable" String="specialVars" context="#stay"/>
+				<keyword attribute="Exceptions" String="exceptions" context="#stay"/>
+				<RegExpr attribute="Normal Text" String="[a-zA-Z_][a-zA-Z_0-9]{2,}" context="#stay"/>
+
+			    <!-- Match comments -->
+				<Detect2Chars attribute="Comment" context="Comment 1" char="/" char1="/" />
+				<Detect2Chars attribute="Comment" context="Comment 2" char="/" char1="*" beginRegion="Comment" />
+				<IncludeRules context="Number Formatting" />
+				<!-- Match strings and characters -->
+				<DetectChar attribute="String" context="String" char="&quot;" />
+				<DetectChar attribute="Char" context="Char Literal" char="'" />
+			</context>
+
+			<context name="Number Formatting" attribute="Normal Text" lineEndContext="#stay">
+				<Float attribute="Float" context="#stay">
+					<AnyChar String="FfLl" attribute="Float" context="#stay"/>
+				</Float>
+				
+				<Int attribute="Int" context="#stay">
+					<StringDetect attribute="Long" String="L" insensitive="true" context="#stay"/>
+					<StringDetect attribute="LongLong" String="LL" insensitive="true" context="#stay"/>
+					<StringDetect attribute="UnsignedLong" String="UL" insensitive="true" context="#stay"/>
+					<StringDetect attribute="UnsignedLongLong" String="ULL" insensitive="true" context="#stay"/>
+					<StringDetect attribute="UnsignedInt" String="U" insensitive="true" context="#stay"/>
+				</Int>
+
+				<RegExpr attribute="Hex" context="#stay" String="[\+\-]?0x[0-9A-Fa-f]('?[0-9A-Fa-f]+)*([Uu]?[Ll]?[Ll]?)?\b" />
+				<RegExpr attribute="Binary" context="#stay" String="0[Bb][01]('?[01]+)*\b" />
+				<RegExpr attribute="Octal" context="#stay" String="[\+\-]?0'?[0-7]('?[0-7]+)*([Uu]?[Ll]?[Ll]?)?\b" />
+			</context>
+
+			<context name="String" attribute="String" lineEndContext="#pop">
+				<HlCStringChar attribute="String Char" context="#stay" />
+				<RegExpr attribute="String Char" context="#stay" String="\\u([0-9A-Fa-f]{0,2}|00[0-9A-Fa-f]{0,2})?" />
+				<DetectChar attribute="String" context="#pop" char="&quot;" />
+				<Detect2Chars attribute="Normal Text" context="InString" char="$" char1="{" />
+			</context>
+
+			<context name="InString" attribute="Normal Text" lineEndContext="#pop">
+				<keyword attribute="Definition Keyword" String="defs" context="#stay"/>
+				<keyword attribute="Builtin Function" String="builtinFuncs" context="#stay"/>
+				<keyword attribute="Special Variable" String="specialVars" context="#stay"/>
+				<IncludeRules context="Number Formatting" />
+				<DetectChar attribute="Char" context="Char Literal" char="'" />
+				<DetectChar attribute="String" context="String" char="&quot;" />
+				<DetectChar attribute="Normal Text" context="#pop" char="}" />
+			</context>
+
+			<context name="Char Literal" attribute="Char" lineEndContext="#pop">
+				<RegExpr attribute="String Char" context="#stay" String="\\u([0-9A-Fa-f]{0,2}|00[0-9A-Fa-f]{0,2})?" />
+				<RegExpr attribute="String Char" context="#stay" String="\\x[0-9A-Fa-f]{0,2}" />
+				<RegExpr attribute="String Char" context="#stay" String="\\[0-7]{0,3}" />
+				<RegExpr attribute="String Char" context="#stay" String="\\[&quot;'\?\\bfnrtv]?" />
+				<DetectChar attribute="Char" context="#pop" char="'" />
+			</context>
+
+			<context name="Comment 1" attribute="Comment" lineEndContext="#pop">
+				<LineContinue attribute="Comment" context="#stay" />
+				<DetectSpaces />
+				<DetectIdentifier />
+			</context>
+
+			<context name="Comment 2" attribute="Comment" lineEndContext="#stay">
+				<DetectSpaces />
+				<LineContinue attribute="Comment" context="#stay" />
+				<Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="Comment" />
+				<DetectIdentifier />
+			</context>
+
+		</contexts>
+
+		<itemDatas>
+			<itemData name="Normal Text" defStyleNum="dsNormal" spellChecking="false"/>
+			<itemData name="Definition Keyword" defStyleNum="dsKeyword" spellChecking="false"/>
+			<itemData name="Operator" defStyleNum="dsOperator" spellChecking="false"/>
+			<itemData name="Operator Keyword" defStyleNum="dsKeyword" spellChecking="false"/>
+			<itemData name="Control Flow" defStyleNum="dsControlFlow" spellChecking="false"/>
+			<itemData name="Builtin Function" defStyleNum="dsBuiltIn" spellChecking="false"/>
+			<itemData name="Special Variable" defStyleNum="dsVariable" spellChecking="false"/>
+			<itemData name="Extensions" defStyleNum="dsExtension" spellChecking="false"/>
+			<itemData name="Exceptions" defStyleNum="dsPreprocessor" spellChecking="false"/>
+			<itemData name="Overloaders" defStyleNum="dsFunction" spellChecking="false"/>
+			<itemData name="Import" defStyleNum="dsImport" spellChecking="false"/>
+			<itemData name="Float" defStyleNum="dsFloat" spellChecking="false"/>
+			<itemData name="Int" defStyleNum="dsDecVal" spellChecking="false"/>
+			<itemData name="Hex" defStyleNum="dsBaseN" spellChecking="false"/>
+			<itemData name="Octal" defStyleNum="dsBaseN" spellChecking="false"/>
+			<itemData name="Binary" defStyleNum="dsBaseN" spellChecking="false"/>
+			<itemData name="Complex" defStyleNum="dsOthers" spellChecking="false"/>
+			<itemData name="Comment" defStyleNum="dsComment"/>
+			<itemData name="String" defStyleNum="dsString"/>
+			<itemData name="Raw String" defStyleNum="dsVerbatimString"/>
+			<itemData name="F-String" defStyleNum="dsSpecialString"/>
+			<itemData name="Raw F-String" defStyleNum="dsVerbatimString"/>
+			<itemData name="String Char" defStyleNum="dsChar" spellChecking="false"/>
+			<itemData name="String Substitution" defStyleNum="dsSpecialChar" spellChecking="false"/>
+			<itemData name="Decorator" defStyleNum="dsAttribute" spellChecking="false"/>
+			<itemData name="Error" defStyleNum="dsError"/>
+		</itemDatas>
+	</highlighting>
+	<general>
+		<folding indentationsensitive="1" />
+		<emptyLines>
+			<emptyLine regexpr="(?:\s+|\s*#.*)"/>
+		</emptyLines>
+		<comments>
+			<comment name="singleLine" start="//" />
+			<comment name="multiLine" start="/*" end="*/" region="Comment" />
+		</comments>
+		<indentation mode="python" />
+		<keywords casesensitive="1" additionalDeliminator="#'"/>
+	</general>
+</language>
+
+<!-- kate: space-indent off; indent-width 4; -->
