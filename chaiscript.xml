@@ -109,11 +109,11 @@
 				</Float>
 				
 				<Int attribute="Int" context="#stay">
-					<StringDetect attribute="Long" String="L" insensitive="true" context="#stay"/>
-					<StringDetect attribute="LongLong" String="LL" insensitive="true" context="#stay"/>
-					<StringDetect attribute="UnsignedLong" String="UL" insensitive="true" context="#stay"/>
-					<StringDetect attribute="UnsignedLongLong" String="ULL" insensitive="true" context="#stay"/>
-					<StringDetect attribute="UnsignedInt" String="U" insensitive="true" context="#stay"/>
+					<StringDetect attribute="Int" String="L" insensitive="true" context="#stay"/>
+					<StringDetect attribute="Int" String="LL" insensitive="true" context="#stay"/>
+					<StringDetect attribute="Int" String="UL" insensitive="true" context="#stay"/>
+					<StringDetect attribute="Int" String="ULL" insensitive="true" context="#stay"/>
+					<StringDetect attribute="Int" String="U" insensitive="true" context="#stay"/>
 				</Int>
 
 				<RegExpr attribute="Hex" context="#stay" String="[\+\-]?0x[0-9A-Fa-f]('?[0-9A-Fa-f]+)*([Uu]?[Ll]?[Ll]?)?\b" />
@@ -128,7 +128,7 @@
 				<Detect2Chars attribute="Normal Text" context="InString" char="$" char1="{" />
 			</context>
 
-			<context name="InString" attribute="Normal Text" lineEndContext="#pop">
+			<context name="InString" attribute="Normal Text" lineEndContext="#stay">
 				<keyword attribute="Definition Keyword" String="defs" context="#stay"/>
 				<keyword attribute="Builtin Function" String="builtinFuncs" context="#stay"/>
 				<keyword attribute="Special Variable" String="specialVars" context="#stay"/>
