@@ -80,6 +80,7 @@
 			<item>__LINE__</item>
 			<item>__CLASS__</item>
 			<item>__FUNC__</item>
+			<item>__FILE__</item>
 		</list>
 		<list name="exceptions">
 			<item>runtime_error</item>
